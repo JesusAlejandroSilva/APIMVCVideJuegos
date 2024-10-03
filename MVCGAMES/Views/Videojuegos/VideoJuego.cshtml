@@ -1,0 +1,199 @@
+﻿@model IEnumerable<MVCGAMES.Models.VideoJuegoViewModel>
+
+@{
+    ViewData["Title"] = "Videojuegos - CRUD";
+}
+
+<h2>Gestión de Videojuegos</h2>
+<!-- Botón para abrir la modal -->
+<button class="btn btn-primary" data-toggle="modal" data-target="#rankingModal">Generar Ranking</button>
+
+<!-- Ventana Modal -->
+<div class="modal fade" id="rankingModal" tabindex="-1" role="dialog" aria-labelledby="rankingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rankingModalLabel">Generar Ranking de Videojuegos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="rankingForm">
+                    <div class="form-group">
+                        <label for="topDeseado">Top deseado (Valor numérico - Entero positivo):</label>
+                        <input type="number" class="form-control" id="topDeseado" name="topDeseado" required min="0" />
+                        <div class="invalid-feedback" id="error-message"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="generateRankingButton">Generar Ranking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <!-- Filtros de búsqueda -->
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="filterNombre" placeholder="Filtrar por Nombre">
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="filterCompania" placeholder="Filtrar por Compañía">
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="filterAnio" placeholder="Filtrar por Año">
+        </div>
+        <div class="col-md-12 mt-2">
+            <button class="btn btn-success" id="btnBuscar">Buscar</button>
+        </div>
+    </div>
+
+    <!-- Botón para Crear Nuevo Videojuego -->
+    <div class="row mt-4">
+        <div class="col-md-12 text-right">
+            <button class="btn btn-primary" id="btnNuevo" data-toggle="modal" data-target="#videojuegoModal">Crear Videojuego</button>
+        </div>
+    </div>
+
+    <!-- Tabla de Videojuegos -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Compañía</th>
+                        <th>Año</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaVideojuegos">
+                    @foreach (var videojuego in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="#" class="detalleVideojuego" data-id="@videojuego.Id" data-toggle="modal" data-target="#detalleModal">@videojuego.Id</a>
+                            </td>
+                            <td>@videojuego.Nombre</td>
+                            <td>@videojuego.Compania</td>
+                            <td>@videojuego.AnioLanzamiento</td>
+                            <td>
+                                <button class="btn btn-warning btnActualizar" data-id="@videojuego.Id">Actualizar</button>
+                                <button class="btn btn-danger btnEliminar" data-id="@videojuego.Id">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="Paginación">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                    <!-- Aquí irán los números de página generados dinámicamente -->
+                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Crear/Actualizar Videojuego -->
+<div class="modal fade" id="videojuegoModal" tabindex="-1" role="dialog" aria-labelledby="videojuegoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videojuegoModalLabel">Crear Videojuego</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formVideojuego">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="compania">Compañía</label>
+                        <input type="text" class="form-control" id="compania" name="compania" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="anioLanzamiento">Año de Lanzamiento</label>
+                        <input type="number" class="form-control" id="anioLanzamiento" name="anioLanzamiento" required>
+                    </div>
+                    <input type="hidden" id="videojuegoId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-success" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Ver Detalle del Videojuego -->
+<div class="modal fade" id="detalleModal" tabindex="-1" role="dialog" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalleModalLabel">Detalle del Videojuego</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre:</strong> <span id="detalleNombre"></span></p>
+                <p><strong>Compañía:</strong> <span id="detalleCompania"></span></p>
+                <p><strong>Año:</strong> <span id="detalleAnioLanzamiento"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Lógica para manejar la paginación, creación, actualización y eliminación
+        });
+
+        // Función para mostrar el detalle del videojuego en el modal
+        $('.detalleVideojuego').on('click', function () {
+            var id = $(this).data('id');
+            // Llamar al servicio para obtener el detalle por ID y mostrar en el modal
+        });
+
+        // Función para eliminar el videojuego
+        $('.btnEliminar').on('click', function () {
+            var id = $(this).data('id');
+            if (confirm("¿Seguro que deseas eliminar este videojuego?")) {
+                // Lógica para llamar al endpoint de eliminación
+            }
+        });
+
+        // Función para crear o actualizar un videojuego
+        $('#btnGuardar').on('click', function () {
+            var videojuego = {
+                Id: $('#videojuegoId').val(),
+                Nombre: $('#nombre').val(),
+                Compania: $('#compania').val(),
+                AnioLanzamiento: $('#anioLanzamiento').val()
+            };
+            // Lógica para crear o actualizar usando el servicio HttpClient
+        });
+    </script>
+}

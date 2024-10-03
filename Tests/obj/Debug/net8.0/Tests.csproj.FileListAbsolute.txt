@@ -1,0 +1,11 @@
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\bin\Debug\net8.0\Tests.deps.json
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\bin\Debug\net8.0\Tests.dll
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\bin\Debug\net8.0\Tests.pdb
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.AssemblyInfoInputs.cache
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.AssemblyInfo.cs
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.csproj.CoreCompileInputs.cache
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.dll
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\refint\Tests.dll
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\Tests.pdb
+C:\Users\ext.jsilva\source\repos\VideoJuegos\Tests\obj\Debug\net8.0\ref\Tests.dll

@@ -1,0 +1,24 @@
+﻿@model MVCGAMES.Models.RegistroViewModel;
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Nombre Usuario</label>
+        <input asp-for="NombreUsuario" />
+        <span asp-validation-for="NombreUsuario"></span>
+    </div>
+    <div>
+        <label>Correo Electrónico</label>
+        <input asp-for="CorreoElectronico" />
+        <span asp-validation-for="CorreoElectronico"></span>
+    </div>
+    <div>
+        <label>Contraseña</label>
+        <input asp-for="Contraseña" type="password" />
+        <span asp-validation-for="Contraseña"></span>
+    </div>
+    <button type="submit">Registrar</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

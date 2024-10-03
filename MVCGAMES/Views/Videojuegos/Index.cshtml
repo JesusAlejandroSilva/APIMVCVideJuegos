@@ -1,0 +1,126 @@
+﻿@model IEnumerable<MVCGAMES.Models.VideoJuegoViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <!-- Título de la página -->
+    <div class="text-center mb-4">
+        <h1>Lista de Videojuegos</h1>
+    </div>
+
+    <!-- Formulario de filtro -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form class="form-inline row g-3" method="get" asp-action="Index">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Nombre del Videojuego" name="filter">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Compañía" name="company">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Año de Lanzamiento" name="year">
+                </div>
+                <div class="col-md-12 mt-3 text-center">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Limpiar Filtros</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Botón para crear un nuevo videojuego -->
+    <div class="mb-4 text-end">
+        <a href="@Url.Action("Create")" class="btn btn-success">Crear Videojuego</a>
+    </div>
+
+    <!-- Tabla de videojuegos -->
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Compañía</th>
+                        <th>Año de Lanzamiento</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var videojuego in Model)
+                    {
+                        <tr>
+                            <td>
+                                <!-- Enlace para abrir el modal con detalles del videojuego -->
+                                <a href="javascript:void(0);" class="text-info" data-bs-toggle="modal" data-bs-target="#modalDetalles" onclick="loadDetails(@videojuego.Id)">@videojuego.Id</a>
+                            </td>
+                            <td>@videojuego.Nombre</td>
+                            <td>@videojuego.Compania</td>
+                            <td>@videojuego.AnioLanzamiento</td>
+                            <td>
+                                <!-- Botón Editar -->
+                                <a href="@Url.Action("Edit", new { id = videojuego.Id })" class="btn btn-warning btn-sm">Editar</a>
+                                <!-- Botón Eliminar -->
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@videojuego.Id)">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Paginación -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+                    <!-- Páginas dinámicas -->
+                    <li class="page-item"><a class="page-link" href="?page="">Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="?page="">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page="">Última</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver detalles del videojuego -->
+<div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="detallesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detallesLabel">Detalles del Videojuego</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se cargarán los detalles del videojuego -->
+                <div id="detallesContenido"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        // Función para cargar detalles en el modal
+        function loadDetails(id) {
+            $.get("/Videojuegos/Details/" + id, function (data) {
+                $("#detallesContenido").html(data);
+            });
+        }
+
+        // Función para confirmar eliminación
+        function confirmDelete(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este videojuego?")) {
+                $.post("/Videojuegos/Delete/" + id, function () {
+                    location.reload();
+                }).fail(function () {
+                    alert("Error al eliminar el videojuego.");
+                });
+            }
+        }
+    </script>
+}
